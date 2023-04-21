@@ -1,8 +1,8 @@
 #include <Wire.h>
-#include <Clock.h>
+#include <ClockMotor.h>
 
 byte id = 1; 
-Clock clock(10,11);
+ClockMotor m = ClockMotor(2, 3);
 bool calibrated = false;
 String msg = "";
 byte state = 1;
@@ -20,15 +20,15 @@ void setup() {
   Wire.onReceive(receiveEvent);
   Wire.onRequest(requestEvent);
 
-  clock.hourMotor = new ClockMotor(2,4,3,5);
-  clock.minuteMotor = new ClockMotor(6,8,7,9);
   
 }
 
 void loop() {
 
   switch(state){
-    case 1:
+    default:
+    m.rotate();
+    /*case 1:
       clock.calibrate();
       if(clock.calibrated()){
         state = 2;
@@ -36,7 +36,7 @@ void loop() {
       break;
     case 3:
       clock.animate();
-      break;
+      break;*/
   }
 
   delay(10);
@@ -98,8 +98,8 @@ void requestEvent() {
       Serial.print(parameters[i]);
       Serial.println("\"");
     }
-
-    clock.setDestination(parameters[0].toInt(),parameters[1].toInt(),parameters[2].toInt(),parameters[3].toInt());
+m.setDestination(parameters[1].toInt(),parameters[2].toInt(),parameters[3].toInt());
+    //clock.setDestination(parameters[0].toInt(),parameters[1].toInt(),parameters[2].toInt(),parameters[3].toInt());
     
     
   }
