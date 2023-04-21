@@ -33,7 +33,7 @@ void loop(){
     //readSerialPort();
     readHCPort();
     if(msg!=""){
-      Serial.print("Master sent : " );
+      Serial.print("Message read : " );
       Serial.println(msg);
       hc05.println(msg);
       msg=""; 
@@ -42,12 +42,12 @@ void loop(){
 
 void readSerialPort(){
   msg="";
- while (Serial.available()) {
-   delay(10);  
-   if (Serial.available() >0) {
-     char c = Serial.read();  //gets one byte from serial buffer
-     msg += c; //makes the string readString
-   }
+  while (Serial.available()) {
+    delay(10);
+    if (Serial.available() >0) {
+      char c = Serial.read();  //gets one byte from serial buffer
+      msg += c; //makes the string readString
+    }
  }
 }
 

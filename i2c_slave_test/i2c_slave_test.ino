@@ -5,7 +5,7 @@ byte id = 1;
 Clock clock(10,11);
 bool calibrated = false;
 String msg = "";
-byte state = 0;
+byte state = 1;
 /*
  * 0 : nothing
  * 1 : calibrating
@@ -26,7 +26,6 @@ void setup() {
 }
 
 void loop() {
-  
 
   switch(state){
     case 1:

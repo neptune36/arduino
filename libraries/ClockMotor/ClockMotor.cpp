@@ -3,19 +3,16 @@
 
 
 ClockMotor::ClockMotor(){}
-ClockMotor::ClockMotor(byte motor_pin_1,byte motor_pin_2,byte motor_pin_3,byte motor_pin_4)
+ClockMotor::ClockMotor(byte step_pin,byte direction_pin)
 {
-	this->motor_pin_1 = motor_pin_1;
-	this->motor_pin_2 = motor_pin_2;
-	this->motor_pin_3 = motor_pin_3;
-	this->motor_pin_4 = motor_pin_4;
+	this->step_pin = step_pin;
+	this->direction_pin = direction_pin;
 	
-	pinMode(this->motor_pin_1, OUTPUT);
-	pinMode(this->motor_pin_2, OUTPUT);
-	pinMode(this->motor_pin_3, OUTPUT);
-	pinMode(this->motor_pin_4, OUTPUT);
+	pinMode(this->step_pin, OUTPUT);
+	pinMode(this->direction_pin, OUTPUT);
 }
 
+//clockwiseMode:0 auto; 1 clockwise; 2 counterclockwise
 void ClockMotor::setDestination(int degrees, float inSeconds, byte clockwiseMode){
 	
 	this->clockwiseMode = clockwiseMode;
@@ -25,9 +22,9 @@ void ClockMotor::setDestination(int degrees, float inSeconds, byte clockwiseMode
 		//si la position en step est inferieur a zero, on recalibre en positif (ex -1024 devient 1024)
 		positionInSteps+=STEPS_PER_REVOLUTION;
 	}
-	if(logging)Serial.println((String)"Position before move: "+positionInSteps);
+	if(logging)Serial.println((String)"Position   : "+positionInSteps+" steps");
 	destinationInSteps = degreesToSteps(degrees);
-	if(logging)Serial.println((String)"Set destination: "+destinationInSteps+" steps "+ degrees+" degrees");
+	if(logging)Serial.println((String)"Destination: "+destinationInSteps+" steps "+ degrees+" degrees");
 	
 	if(clockwiseMode==0){//si mode auto, chemin le plus court
 		int distanceA = (STEPS_PER_REVOLUTION+positionInSteps-destinationInSteps)%STEPS_PER_REVOLUTION;
@@ -69,44 +66,23 @@ void ClockMotor::rotate()
 		}
 		
 		if(stepsInt >= distanceInSteps){
-			//if(logging)Serial.println((String)"Target reached "+positionInSteps+'/'+destinationInSteps);
+			if(logging)Serial.println((String)"Target reached "+positionInSteps+'/'+destinationInSteps);
 			//target  reached
 		}
 	}
 }
 
 void ClockMotor::step(int steps){
+	
 	int stepFactor = steps>0?1:-1;
 	int stepsDone = 0;
-	//if(logging)Serial.println((String)"step clockwise "+clockwise);
 	while(stepsDone < abs(steps)){
 		//if(logging)Serial.println((String)"step code "+positionInSteps%4);
-		switch(abs(positionInSteps)%4){
-			case 3:
-				digitalWrite(motor_pin_1,HIGH);
-				digitalWrite(motor_pin_2,LOW);
-				digitalWrite(motor_pin_3,HIGH);
-				digitalWrite(motor_pin_4,LOW);
-				break;
-			case 2:
-				digitalWrite(motor_pin_1,LOW);
-				digitalWrite(motor_pin_2,HIGH);
-				digitalWrite(motor_pin_3,HIGH);
-				digitalWrite(motor_pin_4,LOW);
-				break;
-			case 1:
-				digitalWrite(motor_pin_1,LOW);
-				digitalWrite(motor_pin_2,HIGH);
-				digitalWrite(motor_pin_3,LOW);
-				digitalWrite(motor_pin_4,HIGH);
-				break;
-			case 0:
-				digitalWrite(motor_pin_1,HIGH);
-				digitalWrite(motor_pin_2,LOW);
-				digitalWrite(motor_pin_3,LOW);
-				digitalWrite(motor_pin_4,HIGH);
-				break;
-		}
+		digitalWrite(step_pin,LOW);
+		digitalWrite(step_pin,HIGH);
+		digitalWrite(direction_pin, steps>0 ? LOW : HIGH);
+		delayMicroseconds(200);
+		
 		stepsDone++;
 		positionInSteps += stepFactor;
 		positionInSteps = positionInSteps % STEPS_PER_REVOLUTION;

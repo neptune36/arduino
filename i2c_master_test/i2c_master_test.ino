@@ -68,7 +68,7 @@ void animate(){
       case 5:
         command = "225,225,5,0";
         break;
-        .
+        
     }
 
     Serial.println("sending "+command);

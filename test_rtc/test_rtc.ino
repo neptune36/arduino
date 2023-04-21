@@ -18,11 +18,16 @@ void setup() {
 Serial.begin(9600);
  Serial.println(F("Initialize System"));
  Wire.begin();
+ Serial.println("wire bgan");
 }
 
 void loop() {
- setDate();//Comment once the date is set
+  //Serial.println("set date...");
+ //setDate();//Comment once the date is set (eg. 220101w000000x)
+ //Serial.println("set date running");
  readRTC();
+ //Serial.println("loop");
+ delay(100);
 }
 
 void readRTC( ) { /* function readRTC */

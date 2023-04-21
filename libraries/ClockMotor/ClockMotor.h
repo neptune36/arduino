@@ -13,7 +13,7 @@ class ClockMotor
 	public:
 		
 		ClockMotor();
-		ClockMotor(byte motor_pin_1,byte motor_pin_2,byte motor_pin_3,byte motor_pin_4);
+		ClockMotor(byte step_pin,byte direction_pin);
 		void setDestination(int degree, float inSeconds,byte clockwiseMode);
 		void rotate();
 		void step(int steps);
@@ -24,13 +24,11 @@ class ClockMotor
 		
 		
 	private:
-		byte motor_pin_1;
-		byte motor_pin_2;
-		byte motor_pin_3;
-		byte motor_pin_4;
+		byte step_pin;
+		byte direction_pin;
 		
 		int destinationInSteps;
-		int const STEPS_PER_REVOLUTION = 2048;
+		int const STEPS_PER_REVOLUTION = 4320;
 		float stepsPerMilliseconds;
 		float startMillis;
 		int stepsDone;
