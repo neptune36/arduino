@@ -23,7 +23,7 @@ void loop() {
 
     for(int i=1;i<=9;i++){
       String ans = clockI2C.askQuestionTo(i,"CALIBRATED",3);
-      if(ans=="NOT"){
+      if(ans!="YES"){
         calibrated = false;
         break;
       }

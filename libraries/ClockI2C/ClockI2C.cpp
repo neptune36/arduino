@@ -24,7 +24,7 @@ String ClockI2C::readI2C(int from, int expectedLength){
     char c = Wire.read();
     received += c;    
   }
-  //Serial.println((String)"Message I2C recu de [" + from + "]:" + received);
+  Serial.println((String)"Message I2C recu de [" + from + "]:" + received);
   return received;
 }
 
@@ -32,5 +32,5 @@ void ClockI2C::writeI2C(int destination, String message){
   Wire.beginTransmission(destination);
   Wire.write(message.c_str());
   Wire.endTransmission();
-  //Serial.println((String)"Message I2C envoyé à [" + destination + "]:" + message);
+  Serial.println((String)"Message I2C envoyé à [" + destination + "]:" + message);
 }
