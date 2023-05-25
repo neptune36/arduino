@@ -1,12 +1,20 @@
 #include "Clock.h"
 Clock::Clock(){}
-
-Clock::Clock(byte hall_hour_pin,byte hall_minute_pin){
+/*
+*hour: hall,step,direction
+*minutes: hall,step,direction
+*/
+Clock::Clock(byte hall_hour_pin, byte step_hour_pin, byte direction_hour_pin, byte hall_minute_pin, byte step_minute_pin, byte direction_minute_pin){
 	this->hall_hour_pin = hall_hour_pin;
 	this->hall_minute_pin = hall_minute_pin;
 	
 	pinMode(this->hall_hour_pin, INPUT_PULLUP);
 	pinMode(this->hall_minute_pin, INPUT_PULLUP);
+	
+	hourMotor = new ClockMotor(step_hour_pin,direction_hour_pin);
+	minuteMotor = new ClockMotor(step_minute_pin,direction_minute_pin);
+	
+	
 }
 
 void Clock::calibrate(){

@@ -11,7 +11,7 @@ class Clock{
 		ClockMotor *minuteMotor;
 
 		Clock();
-		Clock(byte hall_hour_pin,byte hall_minute_pin);
+		Clock(byte hall_hour_pin, byte step_hour_pin, byte direction_hour_pin, byte hall_minute_pin, byte step_minute_pin, byte direction_minute_pin);
 		void calibrate();
 		bool calibrated();
 		
